@@ -2,11 +2,12 @@ import { Routes, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from './store';
 import { setChatOverlayOpen } from './store/dashboardSlice';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { Sidebar } from './components/Sidebar';
 import { ChatOverlay } from './components/ChatOverlay';
 import { PromptExecutionPanel } from './components/PromptExecutionPanel';
 import { DashboardPage } from './pages/DashboardPage';
-import { OpportunitiesListPage } from './pages/OpportunitiesListPage';
+import { OpportunitiesPage } from './pages/OpportunitiesPage';
 import { OpportunityDetailPage } from './pages/OpportunityDetailPage';
 import { CreateOpportunityPage } from './pages/CreateOpportunityPage';
 import { SegmentationPage } from './pages/SegmentationPage';
@@ -21,14 +22,16 @@ function App() {
     <div className={styles.app}>
       <Sidebar />
       <div className={styles.content}>
+        <ErrorBoundary>
         <Routes>
           <Route path="/" element={<DashboardPage />} />
-          <Route path="/opportunities" element={<OpportunitiesListPage />} />
+          <Route path="/opportunities" element={<OpportunitiesPage />} />
           <Route path="/opportunities/new" element={<CreateOpportunityPage />} />
           <Route path="/opportunities/:id" element={<OpportunityDetailPage />} />
           <Route path="/segmentation" element={<SegmentationPage />} />
           <Route path="/segmentation/segment/:id" element={<SegmentDetailPage />} />
         </Routes>
+        </ErrorBoundary>
       </div>
 
       {chatOverlayOpen && (

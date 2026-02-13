@@ -19,6 +19,76 @@ import type { DashboardMetrics } from '../types/dashboard';
 import { FormattedMarkdown } from '../components/FormattedMarkdown';
 import styles from './OpportunityDetailPage.module.css';
 
+// Sample scenarios will be added here when provided
+const WHAT_IF_SAMPLES: { id: string; label: string; description: string }[] = [
+  {
+    id: 'improve_realization',
+    label: 'Improve Realization Rate',
+    description: `What if we increase the realization rate from 72% to 85% by enhancing care management outreach and post-discharge follow-ups?
+
+Recalculate:
+- Net savings
+- PMPM impact
+- MLR impact
+- Incremental improvement vs current baseline
+
+Assume intervention cost increases by 10%.`,
+  },
+  {
+    id: 'focus_ma_only',
+    label: 'Focus Only on Medicare Advantage',
+    description: `What if we limit the intervention to Medicare Advantage members only and exclude Medicaid?
+
+Recalculate:
+- Addressable opportunity
+- Realizable savings
+- MLR impact within MA LOB
+- Overall plan MLR impact
+
+Assume same realization rate (72%).`,
+  },
+  {
+    id: 'reduce_readmissions_5pct',
+    label: 'Reduce Readmissions by 5% Instead of Modeled Rate',
+    description: `What if we achieve only a 5% reduction in avoidable inpatient admissions instead of the modeled reduction?
+
+Recalculate:
+- Prevented admissions
+- Net savings
+- PMPM reduction
+- MLR movement
+
+Assess whether the initiative remains financially viable.`,
+  },
+  {
+    id: 'target_high_risk_only',
+    label: 'Target Only High-Risk Members',
+    description: `What if we narrow the intervention to high-risk members only (exclude rising-risk population)?
+
+Recalculate:
+- Affected members
+- Addressable opportunity
+- Realizable savings
+- Operational complexity
+- Time to impact
+
+Compare ROI to broader intervention.`,
+  },
+  {
+    id: 'increase_intervention_cost',
+    label: 'Increase Intervention Cost per Member',
+    description: `What if care management cost per member increases by 20% due to additional staffing and home visits?
+
+Recalculate:
+- Net financial savings after program cost
+- ROI ratio
+- MLR impact
+- Break-even realization threshold
+
+Determine whether the opportunity remains margin-accretive.`,
+  },
+];
+
 export function OpportunityDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -27,6 +97,7 @@ export function OpportunityDetailPage() {
   const [qnaResponses, setQnaResponses] = useState<{ role: string; content: string }[]>([]);
   const [qnaCollapsed, setQnaCollapsed] = useState(false);
   const [whatIfScenario, setWhatIfScenario] = useState('');
+  const [selectedWhatIfId, setSelectedWhatIfId] = useState<string | null>(null);
   const [whatIfResult, setWhatIfResult] = useState<unknown>(null);
   const [newNote, setNewNote] = useState('');
   const [editing, setEditing] = useState(false);
@@ -165,8 +236,10 @@ export function OpportunityDetailPage() {
   const handleWhatIf = async () => {
     if (!id) return;
     setActionError(null);
+    const scenarioToUse = whatIfScenario.trim() || 
+      (selectedWhatIfId ? WHAT_IF_SAMPLES.find((s) => s.id === selectedWhatIfId)?.description : undefined);
     try {
-      const res = await whatIfSimulation(id, whatIfScenario || undefined);
+      const res = await whatIfSimulation(id, scenarioToUse);
       setWhatIfResult(res);
     } catch (e) {
       setWhatIfResult({ error: (e as Error).message });
@@ -371,7 +444,50 @@ export function OpportunityDetailPage() {
           </section>
 
           <section className={styles.section}>
-            <h2>What-if scenario</h2>
+            <h2>What-if Scenario Analysis</h2>
+            <p className={styles.whatIfInstruction}>
+              Select a sample scenario/ type your own scenario description in the text box and click on Run Simulation to conduct an in depth scenario analysis
+            </p>
+            <h3 className={styles.whatIfSubheader}>Sample Scenarios</h3>
+          <div className={styles.whatIfSamples}>
+            {WHAT_IF_SAMPLES.map((sample) => (
+              <button
+                key={sample.id}
+                type="button"
+                className={
+                  selectedWhatIfId === sample.id
+                    ? `${styles.whatIfSample} ${styles.whatIfSampleSelected}`
+                    : styles.whatIfSample
+                }
+                onClick={() => {
+                  setSelectedWhatIfId(selectedWhatIfId === sample.id ? null : sample.id);
+                }}
+              >
+                {sample.label}
+              </button>
+            ))}
+          </div>
+          {selectedWhatIfId && (
+            <div className={styles.whatIfDescription}>
+              <div className={styles.whatIfDescriptionHeader}>
+                <span className={styles.whatIfDescriptionTitle}>
+                  {WHAT_IF_SAMPLES.find((s) => s.id === selectedWhatIfId)?.label}
+                </span>
+                <button
+                  type="button"
+                  className={styles.whatIfDescriptionClose}
+                  onClick={() => setSelectedWhatIfId(null)}
+                  aria-label="Close scenario description"
+                  title="Close"
+                >
+                  ×
+                </button>
+              </div>
+              <div className={styles.whatIfDescriptionContent}>
+                {WHAT_IF_SAMPLES.find((s) => s.id === selectedWhatIfId)?.description}
+              </div>
+            </div>
+          )}
             <input
               type="text"
               placeholder="Scenario description (optional)"
@@ -400,7 +516,9 @@ export function OpportunityDetailPage() {
                   {'error' in whatIfResult && typeof (whatIfResult as { error: string }).error === 'string' ? (
                     <p className={styles.whatIfError}>{(whatIfResult as { error: string }).error}</p>
                   ) : 'response' in whatIfResult && typeof (whatIfResult as { response: string }).response === 'string' ? (
-                    <FormattedMarkdown content={(whatIfResult as { response: string }).response} />
+                    <p className={styles.whatIfPlain}>
+                      {(whatIfResult as { response: string }).response}
+                    </p>
                   ) : (
                     <pre>{JSON.stringify(whatIfResult, null, 2)}</pre>
                   )}
@@ -562,7 +680,7 @@ export function OpportunityDetailPage() {
           </section>
 
           <section className={styles.section}>
-            <h2>QnA (opportunity context)</h2>
+            <h2>Ask AI</h2>
             <div className={styles.qnaInput}>
               <input
                 type="text"

@@ -90,3 +90,14 @@
   opacity: 0.7;
   cursor: not-allowed;
 }
+
+.emptyState {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.emptyState p {
+  margin: 0;
+  font-size: 0.9rem;
+}

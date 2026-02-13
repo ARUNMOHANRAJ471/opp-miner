@@ -283,7 +283,6 @@ export function OpportunitiesListPage() {
                 nameKey="name"
                 type="flat"
                 stroke="#e5e7eb"
-                strokeWidth={1}
                 content={<CustomTreemapContent />}
               />
             </ResponsiveContainer>

@@ -20,14 +20,26 @@ export function getDashboardMetrics(filters = {}) {
   const pmpm = applyFilterVariation(336, filters, 'pmpm');
   const totalMedicalCost = Math.round(totalMembers * pmpm * 12);
   const mlrTarget = 85;
-  const targetMlrPct = applyFilterVariation(90, filters, 'mlr');
-  const totalRevenue = Math.round(totalMedicalCost / (targetMlrPct / 100));
+  const targetOperatingMarginPct = 5;
+  const adminCostPct = 0.05;
+  // Revenue set so that operating margin ≈ 5%: (R - MC - 0.05*R) / R = 0.05 => R = MC / 0.90
+  const totalRevenue = Math.round(totalMedicalCost / (1 - targetOperatingMarginPct / 100 - adminCostPct));
   const mlr = Math.round((totalMedicalCost / totalRevenue) * 100 * 100) / 100;
+  const adminCost = Math.round(totalRevenue * adminCostPct);
+  const operatingMargin = Math.round(((totalRevenue - totalMedicalCost - adminCost) / totalRevenue) * 100 * 100) / 100;
+  const targetMlr = 85;
+  const requiredSavingsToHitTargetMlr = Math.max(0, Math.round(totalMedicalCost - (targetMlr / 100) * totalRevenue));
+  const highCostConcentration = {
+    top1Pct: applyFilterVariation(22.4, filters, 'hc1'),
+    top5Pct: applyFilterVariation(45.2, filters, 'hc5'),
+    top10Pct: applyFilterVariation(58.6, filters, 'hc10'),
+  };
 
   const org = {
     totalMembers,
     totalRevenue,
     totalMedicalCost,
+    adminCost,
     mlr,
     pmpm,
     revenueChangePercent: 3.1,
@@ -35,14 +47,18 @@ export function getDashboardMetrics(filters = {}) {
     pmpmChangePercent: -1.8,
     mlrTarget,
     mlrAboveTarget: Math.round((mlr - mlrTarget) * 10) / 10,
+    operatingMargin,
+    requiredSavingsToHitTargetMlr,
+    highCostConcentration,
   };
 
   const projectedMlrTarget = 89;
-  const realizable = Math.max(0, Math.round(totalMedicalCost - (projectedMlrTarget / 100) * totalRevenue));
-  const realizationRate = 0.72;
-  const addressable = Math.round(realizable / realizationRate);
+  // Set totalIdentified to $130M and calculate other values proportionally
+  const totalIdentified = 130000000; // $130M
   const addressablePctOfIdentified = 0.83;
-  const totalIdentified = Math.round(addressable / addressablePctOfIdentified);
+  const addressable = Math.round(totalIdentified * addressablePctOfIdentified);
+  const realizationRate = 0.72;
+  const realizable = Math.round(addressable * realizationRate);
   const realized = Math.round(realizable * 0.45);
   const affectedMembersPct = 0.18;
   const affectedMembers = Math.min(totalMembers - 1, Math.round(totalMembers * affectedMembersPct));
@@ -69,7 +85,16 @@ export function getDashboardMetrics(filters = {}) {
   const trend = {
     rolling12MonthMlr: [88.1, 88.5, 89.0, 89.2, 89.5, 89.8, 90.0, 90.1, 90.2, 90.0, 89.9, 90.2],
     rolling12MonthPmpm: [328, 330, 332, 331, 333, 334, 335, 336, 336, 335, 334, 336],
-    predictiveForecast: { mlrNextQuarter: 90.0, pmpmNextQuarter: 338 },
+    predictiveForecast: {
+      mlrNextQuarter: 90.0,
+      pmpmNextQuarter: 338,
+      quarters: [
+        { quarter: 1, mlr: 90.0, pmpm: 338 },
+        { quarter: 2, mlr: 90.2, pmpm: 339 },
+        { quarter: 3, mlr: 90.3, pmpm: 340 },
+        { quarter: 4, mlr: 90.1, pmpm: 339 },
+      ],
+    },
   };
 
   const costDistribution = [

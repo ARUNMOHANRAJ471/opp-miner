@@ -3,6 +3,7 @@ import type { RootState } from '../store';
 import { FilterBar } from '../components/FilterBar';
 import { Dashboard } from '../components/Dashboard';
 import { PromptLibrary } from '../components/PromptLibrary';
+import { DashboardAskAI } from '../components/DashboardAskAI';
 import styles from '../App.module.css';
 
 export function DashboardPage() {
@@ -19,6 +20,7 @@ export function DashboardPage() {
           </aside>
         )}
       </main>
+      <DashboardAskAI />
     </>
   );
 }

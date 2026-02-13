@@ -1,4 +1,6 @@
-const API_BASE = (import.meta.env.VITE_API_BASE_URL as string | undefined) || 'http://localhost:3005/api';
+const API_BASE =
+  (import.meta.env.VITE_API_BASE_URL as string | undefined) ||
+  (import.meta.env.DEV ? '/api' : 'http://localhost:3005/api');
 
 function headers(): HeadersInit {
   const h: HeadersInit = { 'Content-Type': 'application/json' };

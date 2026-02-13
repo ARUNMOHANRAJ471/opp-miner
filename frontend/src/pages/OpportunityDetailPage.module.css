@@ -260,6 +260,13 @@
   color: var(--text-primary);
 }
 
+.whatIfSubheader {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
 .explainability {
   display: flex;
   flex-direction: column;
@@ -483,6 +490,91 @@
   margin: 0;
   color: var(--warning, #dc2626);
   font-size: 0.9rem;
+}
+
+.whatIfSamples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.whatIfSample {
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: var(--text-primary);
+}
+
+.whatIfSampleSelected {
+  border-color: var(--accent);
+  background: rgba(37, 99, 235, 0.08);
+  color: #1d4ed8;
+}
+
+.whatIfDescription {
+  margin: 0.75rem 0;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.whatIfDescriptionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.whatIfDescriptionTitle {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.whatIfDescriptionClose {
+  background: none;
+  border: none;
+  padding: 0.2rem 0.4rem;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.whatIfDescriptionClose:hover {
+  color: var(--text-primary);
+  background: var(--bg-card);
+}
+
+.whatIfDescriptionContent {
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+}
+
+.whatIfInstruction {
+  margin: 0.75rem 0 0.5rem 0;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.whatIfPlain {
+  margin: 0;
+  white-space: pre-wrap;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-primary);
 }
 
 .qnaAnswerWrap {

@@ -22,7 +22,7 @@ const initialState: DashboardState = {
     segment: '',
   },
   chatOverlayOpen: false,
-  promptPanelOpen: false,
+  promptPanelOpen: true,
   drillDownKey: null,
 };
 

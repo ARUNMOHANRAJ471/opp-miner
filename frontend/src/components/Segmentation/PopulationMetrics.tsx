@@ -284,8 +284,8 @@ export const PopulationMetrics: React.FC = () => {
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={riskCombinedData}
-                margin={{ top: 8, right: 8, left: 8, bottom: 32 }}
-                barCategoryGap="20%"
+                margin={{ top: 12, right: 12, left: 8, bottom: 40 }}
+                barCategoryGap="30%"
                 barSize={40}
               >
                 <XAxis
@@ -332,7 +332,7 @@ export const PopulationMetrics: React.FC = () => {
                   label={({ x, y, width, height, value, index }) => {
                     const pct = riskCombinedData[index].membersPercent ?? 0;
                     const centerX = (x ?? 0) + (width ?? 0) / 2;
-                    const topY = (y ?? 0) - 6;
+                    const topY = (y ?? 0) - 8;
                     const insideY = (y ?? 0) + (height ?? 0) / 2;
                     return (
                       <>
@@ -341,7 +341,7 @@ export const PopulationMetrics: React.FC = () => {
                           y={topY}
                           textAnchor="middle"
                           fill="#374151"
-                          fontSize={10}
+                          fontSize={9}
                         >
                           {`${pct.toFixed(1)}%`}
                         </text>
@@ -350,7 +350,7 @@ export const PopulationMetrics: React.FC = () => {
                           y={insideY}
                           textAnchor="middle"
                           fill="#ffffff"
-                          fontSize={10}
+                          fontSize={9}
                         >
                           {Number(value).toLocaleString()}
                         </text>
@@ -377,20 +377,20 @@ export const PopulationMetrics: React.FC = () => {
                         <text
                           x={centerX}
                           y={topY}
-                          dy={-10}
+                          dy={-14}
                           textAnchor="middle"
                           fill="#6b7280"
-                          fontSize={10}
+                          fontSize={9}
                         >
                           {`${pct.toFixed(1)}%`}
                         </text>
                         <text
                           x={centerX}
                           y={insideY}
-                          dy={10}
+                          dy={12}
                           textAnchor="middle"
                           fill="#111827"
-                          fontSize={10}
+                          fontSize={9}
                         >
                           {`$${(Number(value) / 1e6).toFixed(1)}M`}
                         </text>
@@ -415,68 +415,6 @@ export const PopulationMetrics: React.FC = () => {
                 {d.name}
               </div>
             ))}
-          </div>
-        </div>
-
-        {/* Cost across service categories – horizontal bar */}
-        <div className={styles.card}>
-          <h3 className={styles.cardTitle}>Cost across service categories</h3>
-          <div className={styles.chartWrapHoriz}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                layout="vertical"
-                data={costByCategoryData}
-                margin={{ top: 4, right: 60, left: 4, bottom: 4 }}
-              >
-                <YAxis
-                  type="category"
-                  dataKey="name"
-                  width={80}
-                  tick={{ fill: 'var(--text-muted)', fontSize: 11 }}
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <XAxis type="number" hide />
-                <Tooltip
-                  contentStyle={{
-                    background: 'var(--bg-card)',
-                    border: '1px solid var(--border)',
-                    borderRadius: 8,
-                    fontSize: 12,
-                  }}
-                  formatter={(val: number, _name, props) => {
-                    const pct = (props?.payload as { percent?: number })?.percent ?? 0;
-                    return [`$${(val / 1e6).toFixed(1)}M (${pct}%)`, 'Cost'];
-                  }}
-                />
-                <Bar
-                  dataKey="amount"
-                  radius={[4, 4, 4, 4]}
-                  barSize={16}
-                  label={({ x, y, width, height, value, index }) => {
-                    const pct = costByCategoryData[index].percent ?? 0;
-                    const labelX = (x ?? 0) + (width ?? 0) + 6;
-                    const labelY = (y ?? 0) + (height ?? 0) / 2 + 4;
-                    return (
-                      <text
-                        x={labelX}
-                        y={labelY}
-                        textAnchor="start"
-                        fill="#374151"
-                        fontSize={11}
-                        fontWeight={500}
-                      >
-                        {`$${(Number(value) / 1e6).toFixed(0)}M · ${pct}%`}
-                      </text>
-                    );
-                  }}
-                >
-                  {costByCategoryData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
           </div>
         </div>
 

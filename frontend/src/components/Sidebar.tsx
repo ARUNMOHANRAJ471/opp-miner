@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setChatOverlayOpen, setPromptPanelOpen } from '../store/dashboardSlice';
+import { setPromptPanelOpen } from '../store/dashboardSlice';
 import { ExportActions } from './ExportActions';
 import styles from './Sidebar.module.css';
 
@@ -48,9 +48,6 @@ export function Sidebar({ memberCount = '652,847', lastUpdated = 'Jan 15, 2025' 
       <div className={styles.actions}>
         <button type="button" className={styles.sidebarBtn} onClick={() => dispatch(setPromptPanelOpen(true))}>
           Prompt Library
-        </button>
-        <button type="button" className={styles.sidebarBtnPrimary} onClick={() => dispatch(setChatOverlayOpen(true))}>
-          AI Assistant
         </button>
         <ExportActions />
       </div>
