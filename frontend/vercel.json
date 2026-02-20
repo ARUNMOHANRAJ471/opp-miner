@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "ai-opportunity-mining-frontend",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/((?!assets/).*)", "destination": "/index.html" }
+  ]
+}
+

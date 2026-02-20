@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "name": "ai-opportunity-mining-backend",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/api/index" }
+  ]
+}
