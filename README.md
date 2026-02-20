@@ -6,7 +6,7 @@ Enterprise-grade AI-powered platform for US healthcare payer executives to ident
 
 Phase 1 delivers the executive dashboard with metrics, filters, charts, prompt library, AI chat overlay, export, and baseline RBAC/audit.
 
-### Run locally
+### Run locally to test
 
 **Option A – Two terminals (recommended on Windows)**
 
