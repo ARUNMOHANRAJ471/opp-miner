@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { executePrompt } from '../api/client';
 import { startExecution, executionSuccess, executionError } from '../store/promptSlice';
 import { setPromptPanelOpen } from '../store/dashboardSlice';
-import { PROMPTS, PROMPT_CATEGORIES, type PromptItem } from '../types/dashboard';
+import { PROMPTS, PROMPT_CATEGORIES } from '../types/dashboard';
 import styles from './PromptLibrary.module.css';
 
 const CATEGORY_ORDER: (keyof typeof PROMPT_CATEGORIES)[] = ['financial', 'opportunity', 'provider', 'executive'];

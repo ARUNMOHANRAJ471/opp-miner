@@ -101,17 +101,6 @@ export const PopulationMetrics: React.FC = () => {
   }));
   const avgPmpm = org?.pmpm ?? 370;
 
-  const costData = data.costDistribution?.length
-    ? data.costDistribution
-    : [
-        { name: 'Inpatient', value: 38, color: '#0d9488' },
-        { name: 'Outpatient', value: 28, color: '#7c3aed' },
-        { name: 'Professional', value: 18, color: '#ea580c' },
-        { name: 'Pharmacy', value: 12, color: '#eab308' },
-        { name: 'Emergency', value: 8, color: '#38bdf8' },
-        { name: 'Other', value: 6, color: '#a78bfa' },
-      ];
-
   /* Bar fill: scale value into 55–100% of track so bars look long and comparable */
   const getBarWidth = (value: number, max: number, minPercent = 55): string => {
     if (value == null || value <= 0 || !max || max <= 0) return '0%';

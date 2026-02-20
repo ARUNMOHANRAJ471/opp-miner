@@ -307,7 +307,7 @@ export function Dashboard() {
                   innerRadius={60}
                   outerRadius={90}
                   paddingAngle={1}
-                  label={({ name, percent, cx, cy, midAngle, innerRadius, outerRadius }) => {
+                  label={({ name, percent, cx, cy, midAngle, outerRadius }) => {
                     if (percent == null) return null;
                     const RADIAN = Math.PI / 180;
                     const radius = outerRadius + 20;
