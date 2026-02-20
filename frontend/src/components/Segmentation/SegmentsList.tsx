@@ -40,7 +40,7 @@ export const SegmentsList: React.FC = () => {
 
   useEffect(() => {
     setLoading(true);
-    getSegmentsList(filters as Record<string, string>)
+    getSegmentsList(filters as unknown as Record<string, string>)
       .then(setSegments)
       .catch(console.error)
       .finally(() => setLoading(false));

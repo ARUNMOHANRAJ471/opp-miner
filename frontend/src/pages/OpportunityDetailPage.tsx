@@ -98,7 +98,7 @@ export function OpportunityDetailPage() {
   const [qnaCollapsed, setQnaCollapsed] = useState(false);
   const [whatIfScenario, setWhatIfScenario] = useState('');
   const [selectedWhatIfId, setSelectedWhatIfId] = useState<string | null>(null);
-  const [whatIfResult, setWhatIfResult] = useState<unknown>(null);
+  const [whatIfResult, setWhatIfResult] = useState<Record<string, unknown> | null>(null);
   const [newNote, setNewNote] = useState('');
   const [editing, setEditing] = useState(false);
   const [editTitle, setEditTitle] = useState('');

@@ -1,5 +1,4 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import { Segment, PopulationMetrics } from '../api/client';
 
 export interface SegmentationFilters {
   lob: string;

@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { PopulationMetrics as PopulationMetricsType, getPopulationMetrics, getDashboardMetrics } from '../../api/client';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, ReferenceLine } from 'recharts';
+import { Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, ReferenceLine } from 'recharts';
 import type { DashboardMetrics } from '../../types/dashboard';
 import styles from './PopulationMetrics.module.css';
 
@@ -18,7 +18,7 @@ export const PopulationMetrics: React.FC = () => {
 
   useEffect(() => {
     setLoading(true);
-    getPopulationMetrics(filters as Record<string, string>)
+    getPopulationMetrics(filters as unknown as Record<string, string>)
       .then(setData)
       .catch(console.error)
       .finally(() => setLoading(false));
@@ -51,11 +51,6 @@ export const PopulationMetrics: React.FC = () => {
   const sdohMembers = Math.round(totalMembers * 0.51);
   const sdohPercent =
     totalMembers > 0 ? (sdohMembers / totalMembers) * 100 : 0;
-
-  const riskChartData = riskData.map((d) => ({
-    ...d,
-    percent: totalMembers > 0 ? (d.value / totalMembers) * 100 : 0,
-  }));
 
   // Allocate cost across risk tiers with increasing per-member cost by risk
   const riskCostWeights: Record<string, number> = {
@@ -116,17 +111,6 @@ export const PopulationMetrics: React.FC = () => {
         { name: 'Emergency', value: 8, color: '#38bdf8' },
         { name: 'Other', value: 6, color: '#a78bfa' },
       ];
-
-  const totalCostForCategories = typeof totalCost === 'number' ? totalCost : 0;
-  const costByCategoryData = costData.map((c) => {
-    const percent = c.value;
-    const amount = totalCostForCategories * (percent / 100);
-    return {
-      ...c,
-      amount,
-      percent,
-    };
-  });
 
   /* Bar fill: scale value into 55–100% of track so bars look long and comparable */
   const getBarWidth = (value: number, max: number, minPercent = 55): string => {
@@ -433,7 +417,9 @@ export const PopulationMetrics: React.FC = () => {
                 <XAxis
                   dataKey="name"
                   fontSize={11}
-                  tick={{ fill: 'var(--text-muted)', angle: -20, textAnchor: 'end' }}
+                  angle={-20}
+                  textAnchor="end"
+                  tick={{ fill: 'var(--text-muted)' }}
                   height={60}
                   interval={0}
                 />
@@ -461,7 +447,7 @@ export const PopulationMetrics: React.FC = () => {
                 <Bar
                   dataKey="pmpm"
                   radius={[4, 4, 0, 0]}
-                  label={({ x, y, width, height, value }) => {
+                  label={({ x, y, width, value }) => {
                     const centerX = (x ?? 0) + (width ?? 0) / 2;
                     const topY = (y ?? 0) - 6;
                     return (

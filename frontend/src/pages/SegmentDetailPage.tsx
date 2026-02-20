@@ -101,7 +101,6 @@ function generateOpportunityExplanation(segment: any): string {
   const realizable = dm?.realizableOpportunity ?? segment.potentialSavings;
   const oppPerMember = dm?.opportunityPerMember ?? Math.round(segment.potentialSavings / segment.memberCount);
   const pmpmReduction = dm?.expectedPmpmReduction ?? Math.round(segment.pmpm * 0.12);
-  const totalCost = segment.totalCost ?? segment.memberCount * segment.pmpm * 12;
   const planTotalCost = 2.63e9;
   const mlrImpact = ((realizable / planTotalCost) * 100).toFixed(2);
   const timeframe = dm?.expectedTimeToImpact ?? 6;
